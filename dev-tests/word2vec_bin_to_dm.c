@@ -5,7 +5,7 @@
 
 
 //
-// This piece of code converts a word2vec binary file to a .dm format which is used by the DISSECT toolkit for compositional semantic purposes
+// This converts a word2vec binary file to a .dm format which is used by the DISSECT toolkit for compositional semantic experiments.
 //
 
 const long long max_size = 2000;         // max length of strings
@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
     for (a = 0; a < size; a++) M[a + b * size] /= len;
   }
   fclose(f);
-  printf("%lld %lld #File: %s\n",words,size,file_name);
+  // printf("%lld %lld #File: %s\n",words,size,file_name);
   for (a = 0; a < words; a++){
     printf("%s ",&vocab[a * max_w]);
     for (b = 0; b< size; b++){ printf("%f ",M[a*size + b]); }
