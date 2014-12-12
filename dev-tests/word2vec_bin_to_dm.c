@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
   float *M;
   char *vocab;
   if (argc < 2) {
-    printf("Usage: ./distance PATH_TO_WORD2VEC_TRAINED_BINARY_FILE_OF_THE_MODEL");
+    printf("Usage: ./a.out PATH_TO_WORD2VEC_TRAINED_BINARY_FILE_OF_THE_MODEL");
     return 0;
   }
   strcpy(file_name, argv[1]);
@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
   for (a = 0; a < words; a++){
     printf("%s ",&vocab[a * max_w]);
     for (b = 0; b< size; b++){ printf("%f ",M[a*size + b]); }
-    printf("\b\b\n");
+    printf("\n");
   }  
 
   return 0;
