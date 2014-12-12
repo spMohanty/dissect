@@ -13,6 +13,8 @@ from composes.utils.regression_learner import RidgeRegressionLearner
 
 import composes.utils.io_utils as io_utils
 import composes.utils.scoring_utils as scoring_utils
+import composes.utils.space_utils as space_utils
+
 
 #load a core space
 print "Loading the data..."
@@ -24,15 +26,19 @@ dissect_toy_data = "/Users/spmohanty/work/compositional_semantics/dissect/src/ex
 ## Only adding support for .dm files, as the sm files are inherently inefficiently designed 
 ## especially for latge vector spaces. :( 
 
-space_file = data_path + "word2vec_trained_text8.dm"
-space = Space.build(data = space_file,
-                       format = "dm")
+space_file = "/Users/spmohanty/work/compositional_semantics/dissect/dev-tests/" + "word2vec_model.bin"
+# space = Space.build(data = space_file,
+#                        format = "dm")
+
+(result, space) = space_utils.load_word2vec_bnary_as_space(space_file)
+print result
+print space
 
 ## Get similarity between words
 print space.get_sim("cat","dog", CosSimilarity())
 print space.get_sim("cat","car", CosSimilarity())
 
-# Get top-N neighbours
+# # Get top-N neighbours
 
 print space.get_neighbours("cat", 3, CosSimilarity())
 
