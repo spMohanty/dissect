@@ -2,6 +2,7 @@
 #include <string.h>
 #include <math.h>
 #include <malloc/malloc.h> 
+#include <stdbool.h>
 
 
 //
@@ -48,9 +49,42 @@ int main(int argc, char **argv) {
   }
   fclose(f);
   // printf("%lld %lld #File: %s\n",words,size,file_name);
+
+  // A Linear Transformation to make all the dimensions of all the feature vectors is necessary 
+  // As DISSECT used NonNegative Matrix Factorization and hence doesnot support non negative values 
+  //
+  // And, a linear transformation is the best bet, as we do not want to loose any of the statistical properties of the distribution
+  // by passing them through a funny function.
+
+  // Do we will do two iterations in this pre-processing stage just to leave the statistical distribution of the params unaffected
+
+  float *least_dim;
+  least_dim = (float *)malloc(sizeof(float)*(long long)size);
+  bool *is_initialized;
+  is_initialized = (bool *)malloc(sizeof(bool)*(long long)size);
+  for(b=0;b<size;b++){//Initialize the initialization flag vector to false
+  	is_initialized[b] = false;
+  }
+
+  //First pass to estimate the bounds of the data points
+  for(a=0; a<words; a++){
+  	for(b=0;b<size; b++){
+  		if(is_initialized[b] == false){
+  			//Initialize the starting min value
+  			least_dim[b] = M[a*size + b];
+  			is_initialized[b] = true;
+  		}else{
+  			if(M[a*size + b] < least_dim[b]){
+  				least_dim[b] = M[a*size + b];
+  			}
+  		}
+  	}
+  }
+
+  //Seconds pass to print the translated vector space so that all values in all dimensions are non negative
   for (a = 0; a < words; a++){
     printf("%s ",&vocab[a * max_w]);
-    for (b = 0; b< size; b++){ printf("%f ",M[a*size + b]); }
+    for (b = 0; b< size; b++){ printf("%f ",(M[a*size + b])-least_dim[b]); }
     printf("\n");
   }  
 
